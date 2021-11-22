@@ -14,26 +14,29 @@ def calculateRow(boardState, color):
                 score += 1
     return score
 
-def downtoup_diagonal_count(boardState, color):
-    connected_fours = 0
+
+def calculateDownToUpDiagonal(boardState, color):
+    score = 0
     for j in range(4):
         for i in range(5, 2, -1):
 
             if getElementAtIndex(boardState, i, j) == getElementAtIndex(boardState, i - 1, j - 1) == getElementAtIndex(
                     boardState, i - 2, j - 2) == getElementAtIndex(boardState, i - 3, j - 3) == color:
-                connected_fours += 1
+                score += 1
 
-    return connected_fours
+    return score
 
 
-def uptodown_diagonal_count(boardState, color):
-    connected_fours = 0
+def calculateUpToDownDiagonal(boardState, color):
+    score = 0
     for j in range(4):
         for i in range(3):
-            if getElementAtIndex(boardState, i, j) == getElementAtIndex(boardState, i+1, j+1) == getElementAtIndex(boardState, i+2, j+2) == getElementAtIndex(boardState,i+3,j+3) == color:
-                connected_fours += 1
+            if getElementAtIndex(boardState, i, j) == getElementAtIndex(boardState, i + 1, j + 1) == getElementAtIndex(
+                    boardState, i + 2, j + 2) == getElementAtIndex(boardState, i + 3, j + 3) == color:
+                score += 1
 
-    return connected_fours
+    return score
+
 
 def calculateColumn(boardState, color):
     score = 0
@@ -50,7 +53,7 @@ def calculateColumn(boardState, color):
 
 
 def calculateDiagonal(boardState, color):
-    return uptodown_diagonal_count(boardState, color) + downtoup_diagonal_count(boardState, color)
+    return calculateUpToDownDiagonal(boardState, color) + calculateDownToUpDiagonal(boardState, color)
 
 
 def calculateScore(boardState, color):

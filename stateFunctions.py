@@ -2,7 +2,8 @@
 # Y for yellow FOR OPPONENT
 # R for RED FOR PLAYER
 
-state = 'E' * 42
+def initializeState():
+    return 'E'*42
 
 
 def getElementAtIndex(boardState, i, j):

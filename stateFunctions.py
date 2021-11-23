@@ -10,12 +10,17 @@ def getElementAtIndex(boardState, i, j):
     return boardState[i * 7 + j]
 
 
-def isFull(boardState, j):
+def isColumnFull(boardState, j):
     if boardState[j] == 'E':
         return False
     else:
         return True
 
+def isFull(boardState):
+    for j in range(7):
+        if not isFull(boardState, j):
+            return False
+    return True
 
 def insertAtColumn(boardState, j, color):
     for i in range(5, -1, -1):
@@ -35,7 +40,7 @@ def printBoard(boardState):
 def getChildren(boardState):
     children = []
     for j in range(7):
-        if not isFull(boardState, j):
+        if not isColumnFull(boardState, j):
             children.append(insertAtColumn(boardState, j, 'Y'))
     return children
 

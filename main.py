@@ -1,15 +1,19 @@
+from random import randint
+import random
 from scoreFunctions import *
-from stateFunctions import printBoard, insertAtColumn
+from stateFunctions import printBoard
 
 state = initializeState()
+finalBoard = ['R'] * 21 + ['Y'] * 21
+random.shuffle(finalBoard)
 for i in range(6):
     for j in range(7):
-        if i == 3 and j == 4:
-            state = insertAtColumn(state, j, 'R')
-        else:
-            state = insertAtColumn(state, j, 'Y')
+        color = 'R'
+        if randint(0, 1) == 0:
+            color = 'Y'
+        state = insertAtColumn(state, j, color)
 
 printBoard(state)
-
-print(calculateDownToUpDiagonal(state, 'Y'))
-print(calculateUpToDownDiagonal(state, 'Y'))
+printBoard(finalBoard)
+print(calculateScore(finalBoard, 'Y'))
+print(calculateScore(state, 'Y'))

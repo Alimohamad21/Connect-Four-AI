@@ -20,8 +20,8 @@ def calculateDownToUpDiagonal(boardState, color):
     for j in range(4):
         for i in range(5, 2, -1):
 
-            if getElementAtIndex(boardState, i, j) == getElementAtIndex(boardState, i - 1, j - 1) == getElementAtIndex(
-                    boardState, i - 2, j - 2) == getElementAtIndex(boardState, i - 3, j - 3) == color:
+            if getElementAtIndex(boardState, i, j) == getElementAtIndex(boardState, i - 1, j + 1) == getElementAtIndex(
+                    boardState, i - 2, j + 2) == getElementAtIndex(boardState, i - 3, j + 3) == color:
                 score += 1
 
     return score

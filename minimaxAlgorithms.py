@@ -1,6 +1,7 @@
 import sys
 
-from scoreFunctions import calculateScore, eval
+from heuristicFunctions import eval
+from scoreFunctions import calculateScore
 from stateFunctions import getChildren, isFull
 
 

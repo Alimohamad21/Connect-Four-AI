@@ -24,10 +24,12 @@ def main():
     print(pygame.font.get_fonts())
     while True:
         if isFull(boardState):
-            if yellowScore>redScore:
+            if yellowScore > redScore:
                 message = 'YOU WIN !'
-            else:
+            elif yellowScore < redScore:
                 message = 'AI WINS :('
+            else:
+                message = 'DRAW'
         elif isUserTurn:
             message = 'YOUR TURN'
         else:
@@ -81,6 +83,8 @@ def displayGameState(text):
                      (0, 0, WINDOW_WIDTH, 100))
     font = pygame.font.SysFont('Arial', 35)
     SCREEN.blit(font.render(message, True, RED), (50, 30))
+
+
 # inkfree for you win
 
 def drawBoard():

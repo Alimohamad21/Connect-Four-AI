@@ -21,6 +21,7 @@ def main():
     SCREEN.fill(BLACK)
     drawBoard()
     selectedColumn = 0
+    print(pygame.font.get_fonts())
     while True:
         if isFull(boardState):
             if yellowScore>redScore:
@@ -34,7 +35,7 @@ def main():
         displayGameState(message)
         x = pygame.mouse.get_pos()[0]
         y = pygame.mouse.get_pos()[1]
-        print(f'x:{x} y:{y}')
+        # print(f'x:{x} y:{y}')
         if isUserTurn:
             if y > 100:
                 if x // 100 == selectedColumn:
@@ -44,6 +45,8 @@ def main():
                 else:
                     selectedColumn = x // 100
                     drawBoard()
+            else:
+                drawBoard()
         else:
             column = randint(0, 6)
             while isColumnFull(boardState, column):
@@ -53,7 +56,7 @@ def main():
             drawBoard()
             isUserTurn = True
         for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN and isUserTurn:
+            if event.type == pygame.MOUSEBUTTONDOWN and isUserTurn and y > 100:
                 if not isColumnFull(boardState, selectedColumn):
                     boardState = insertAtColumn(boardState, selectedColumn, 'Y')
                     isUserTurn = False
@@ -78,7 +81,7 @@ def displayGameState(text):
                      (0, 0, WINDOW_WIDTH, 100))
     font = pygame.font.SysFont('Arial', 35)
     SCREEN.blit(font.render(message, True, RED), (50, 30))
-
+# inkfree for you win
 
 def drawBoard():
     color = None

@@ -34,10 +34,9 @@ def getPlayableRow(boardState, j):
 
 
 def insertAtColumn(boardState, j, color):
-    for i in range(5, -1, -1):
-        if getElementAtIndex(boardState, i, j) == 'E':
-            index = i * 7 + j
-            return boardState[:index] + color + boardState[index + 1:]
+    i = getPlayableRow(boardState, j)
+    index = 7*i+j
+    return boardState[:index] + color + boardState[index + 1:]
 
 
 def printBoard(boardState):

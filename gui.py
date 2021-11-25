@@ -4,15 +4,17 @@ from random import randint
 import pygame
 
 from constants import *
-from stateFunctions import *
 from scoreFunctions import *
+from stateFunctions import *
 
 boardState = initializeBoard()
 isUserTurn = True
+redScore = 0
+yellowScore = 0
 
 
 def main():
-    global SCREEN, CLOCK, boardState, isUserTurn
+    global SCREEN, CLOCK, boardState, isUserTurn, redScore, yellowScore
     pygame.init()
     SCREEN = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     CLOCK = pygame.time.Clock()
@@ -21,13 +23,18 @@ def main():
     selectedColumn = 0
     while True:
         if isFull(boardState):
-            print('GAME OVER')
+            if yellowScore>redScore:
+                message = 'YOU WIN !'
+            else:
+                message = 'AI WINS :('
         elif isUserTurn:
-            print('YOUR TURN')
+            message = 'YOUR TURN'
         else:
-            print('AI TURN')
+            message = 'AI TURN'
+        displayGameState(message)
         x = pygame.mouse.get_pos()[0]
         y = pygame.mouse.get_pos()[1]
+        print(f'x:{x} y:{y}')
         if isUserTurn:
             if y > 100:
                 if x // 100 == selectedColumn:
@@ -42,6 +49,7 @@ def main():
             while isColumnFull(boardState, column):
                 column = randint(0, 6)
             boardState = insertAtColumn(boardState, column, 'R')
+            redScore = calculateScore(boardState, 'R')
             drawBoard()
             isUserTurn = True
         for event in pygame.event.get():
@@ -49,8 +57,7 @@ def main():
                 if not isColumnFull(boardState, selectedColumn):
                     boardState = insertAtColumn(boardState, selectedColumn, 'Y')
                     isUserTurn = False
-                    print(f"YOUR SCORE: {calculateScore(boardState,'Y')}")
-                    print(f"AI SCORE: {calculateScore(boardState,'R')}")
+                    yellowScore = calculateScore(boardState, 'Y')
                     drawBoard()
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -63,6 +70,14 @@ def drawFade(playableRow, selectedColumn):
         int(selectedColumn * SQUARE_SIZE + SQUARE_SIZE / 2),
         int(playableRow * SQUARE_SIZE + SQUARE_SIZE + SQUARE_SIZE / 2)),
                        RADIUS)
+
+
+def displayGameState(text):
+    message = f'YOUR SCORE: {yellowScore}     {text}    AI SCORE:{redScore}'
+    pygame.draw.rect(SCREEN, GREY,
+                     (0, 0, WINDOW_WIDTH, 100))
+    font = pygame.font.SysFont('Arial', 35)
+    SCREEN.blit(font.render(message, True, RED), (50, 30))
 
 
 def drawBoard():

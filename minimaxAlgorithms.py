@@ -33,5 +33,4 @@ def miniMax(boardState, alpha, beta, k, color):
             beta = min(max_eval, beta)
             if beta <= alpha:
                 break
-
     return max_eval

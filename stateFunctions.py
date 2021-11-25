@@ -1,9 +1,12 @@
 # E for empty
 # Y for yellow FOR OPPONENT
 # R for RED FOR PLAYER
+def getRandomBoard():
+    return 'E' * 20 + 'R' * 11 + 'Y' * 11
 
-def initializeState():
-    return 'E'*42
+
+def initializeBoard():
+    return 'E' * 42
 
 
 def getElementAtIndex(boardState, i, j):
@@ -16,11 +19,19 @@ def isColumnFull(boardState, j):
     else:
         return True
 
+
 def isFull(boardState):
     for j in range(7):
-        if not isFull(boardState, j):
+        if not isColumnFull(boardState, j):
             return False
     return True
+
+
+def getPlayableRow(boardState, j):
+    for i in range(5, -1, -1):
+        if getElementAtIndex(boardState, i, j) == 'E':
+            return i
+
 
 def insertAtColumn(boardState, j, color):
     for i in range(5, -1, -1):
@@ -43,6 +54,3 @@ def getChildren(boardState):
         if not isColumnFull(boardState, j):
             children.append(insertAtColumn(boardState, j, 'Y'))
     return children
-
-
-

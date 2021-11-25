@@ -1,8 +1,5 @@
 from stateFunctions import getElementAtIndex
 
-def eval(boardState, color):
-    #FUNCTION TO evaluate non terminal boardstates
-    pass
 
 def calculateRow(boardState, color):
     score = 0

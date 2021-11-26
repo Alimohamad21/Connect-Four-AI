@@ -4,7 +4,7 @@ BLUE = (28, 55, 148, 1)
 RED = (216, 10, 10, 1)
 YELLOW = (248, 210, 12, 1)
 GREY = (196, 196, 196, 1)
-FADED_YELLOW = (255, 255, 127) #(142, 120, 0, 1)
+FADED_YELLOW = (255, 255, 127)  # (142, 120, 0, 1)
 ROW_COUNT = 6  # number of rows
 COLUMN_COUNT = 7  # number of columns
 SQUARE_SIZE = 100
@@ -13,3 +13,8 @@ WINDOW_WIDTH = COLUMN_COUNT * SQUARE_SIZE
 WINDOW_HEIGHT = (ROW_COUNT + 1) * SQUARE_SIZE
 ROW_SIZE = WINDOW_HEIGHT // 6
 COLUMN_SIZE = WINDOW_WIDTH // 7
+FONT_COLOR = RED
+FONT_SIZE = 24
+POTENTIAL_SCORES = [3, 4, 5, 7, 5, 4, 3, 4, 6, 8, 10, 8, 6, 4, 5, 8, 11, 13, 11, 8, 5, 5, 8, 11, 13, 11, 8, 5, 4, 6, 8,
+                    10, 8, 6, 4, 3, 4, 5, 7, 5, 4, 3]
+

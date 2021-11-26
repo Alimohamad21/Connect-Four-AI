@@ -1,20 +1,31 @@
 from minimaxAlgorithms import *
 from stateFunctions import *
 from scoreFunctions import calculateScore
+from constants import POTENTIAL_SCORES
 
+def eval(boardState):
+    myScore = calculateScore(boardState, 'R')
+    opScore = calculateScore(boardState, 'Y')
+    myConnects = possibleBinding(boardState, 'R')
+    opConnects = possibleBinding(boardState, 'Y')
+    myPotential = calculate_potential(boardState, 'R')
+    opPotential = calculate_potential(boardState, 'Y')
+    return 4*(myScore-opScore) + myPotential - opPotential + myConnects - opConnects
 
-def eval(boardState, color):
-    myScore = calculateScore(boardState, color)
-    #myConnects = possibleBinding(boardState, color)
-    return myScore
-
-
+def calculate_potential(boardState, color):
+    potential_score = 0
+    for i in range(42):
+        if boardState[i] == color:
+            potential_score += POTENTIAL_SCORES[i]
+    return potential_score/4
 def possibleBinding(boardState, color):
     value = 0
     for j in range(7):
-        index = getPlayableRow(boardState, j) * 7 + j
-        if index > 41:
+        index = getPlayableRow(boardState, j)
+        if index is None:
             continue
+        index *= 7
+        index += j
         value += connections(boardState, index, color)
     return value
 

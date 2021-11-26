@@ -1,6 +1,8 @@
 import sys
 from random import randint
-from minimaxAlgorithms import decide,decide_pruning
+
+import stateFunctions
+from minimaxAlgorithms import decide
 import pygame
 
 from constants import *
@@ -8,13 +10,16 @@ from scoreFunctions import *
 from stateFunctions import *
 
 boardState = initializeBoard()
-isUserTurn = True
+isUserTurn = False
 redScore = 0
 yellowScore = 0
 
 
 def main():
-    global SCREEN, CLOCK, boardState, isUserTurn, redScore, yellowScore
+    global SCREEN, CLOCK, boardState, isUserTurn, redScore, yellowScore, k, prune
+    k = int(input('ENTER K: '))
+    prune = bool(int(input('ENTER prune 0 or 1: ')))
+    stateFunctions.printBoard(POTENTIAL_SCORES)
     pygame.init()
     SCREEN = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     CLOCK = pygame.time.Clock()
@@ -54,7 +59,9 @@ def main():
          #   while isColumnFull(boardState, column):
          #       column = randint(0, 6)
          #   boardState = insertAtColumn(boardState, column, 'R')
-            boardState = decide(boardState)[0]
+            myArr = decide(boardState, k, prune)
+            boardState = myArr[0]
+            #print(myArr[1], myArr[2])
             redScore = calculateScore(boardState, 'R')
             drawBoard()
             isUserTurn = True
@@ -82,7 +89,7 @@ def displayGameState(text):
     message = f'YOUR SCORE: {yellowScore}     {text}    AI SCORE:{redScore}'
     pygame.draw.rect(SCREEN, GREY,
                      (0, 0, WINDOW_WIDTH, 100))
-    font = pygame.font.SysFont('Arial', 35)
+    font = pygame.font.SysFont('Arial', 24)
     SCREEN.blit(font.render(message, True, RED), (50, 30))
 
 

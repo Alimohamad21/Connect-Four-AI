@@ -10,15 +10,15 @@ def scoreDiff(boardState):
     return calculateScore(boardState, 'R') - calculateScore(boardState, 'Y')
 
 
-def evalDiff(boardState):
-    return eval(boardState, 'R')-eval(boardState, 'Y')
+#def evalDiff(boardState):
+#    return eval(boardState, 'R')-eval(boardState, 'Y')
 
 
 def miniMax_pruning(boardState, alpha, beta, k, color):
     if not k:
-        return [boardState, evalDiff(boardState), 1]
+        return [boardState, eval(boardState), 1]
     elif isFull(boardState):
-        return [boardState, 1000 * scoreDiff(boardState), 1]
+        return [boardState, scoreDiff(boardState), 1]
     maxChild = boardState
     callNumNodes = 1
     if color == 'R':
@@ -56,7 +56,7 @@ def miniMax(boardState, k, color):
     if isFull(boardState):
         return [boardState, 1000 * scoreDiff(boardState), 1]
     elif not k:
-        return [boardState, evalDiff(boardState), 1]
+        return [boardState, eval(boardState), 1]
 
 
     maxChild = boardState
@@ -85,15 +85,15 @@ def miniMax(boardState, k, color):
     return [maxChild, max_eval, callNumNodes]
 
 
-def decide(boardState):
-    start = time()
-    myArr = miniMax(boardState, 3, 'R')
-    end = time()
+def decide(boardState, k=3, prune=True):
+    if prune:
+        start = time()
+        myArr = miniMax_pruning(boardState, -sys.maxsize, sys.maxsize, k, 'R')
+        end = time()
+
+    else:
+        start = time()
+        myArr = miniMax(boardState, k, 'R')
+        end = time()
     return [myArr[0], myArr[2], end - start]
 
-
-def decide_pruning(boardState):
-    start = time()
-    myArr = miniMax_pruning(boardState, -sys.maxsize, sys.maxsize, 3, 'R')
-    end = time()
-    return [myArr[0], myArr[2], end - start]

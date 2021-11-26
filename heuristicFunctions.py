@@ -1,5 +1,6 @@
 from minimaxAlgorithms import *
 from stateFunctions import *
+from scoreFunctions import calculateScore
 
 
 def eval(boardState):
@@ -7,7 +8,7 @@ def eval(boardState):
     opScore = calculateScore(boardState, 'Y')
     myConnects = possibleBinding(boardState, 'Y')
     opConnects = possibleBinding(boardState, 'R')
-    return myScore - opScore + myConnects - opConnects * 1.25
+    return myScore - opScore + (myConnects - opConnects) * 1.25
 
 
 def possibleBinding(boardState, color):

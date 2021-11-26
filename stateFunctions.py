@@ -47,9 +47,9 @@ def printBoard(boardState):
     print('-------------------------')
 
 
-def getChildren(boardState):
+def getChildren(boardState, color):
     children = []
     for j in range(7):
         if not isColumnFull(boardState, j):
-            children.append(insertAtColumn(boardState, j, 'Y'))
+            children.append(insertAtColumn(boardState, j, color))
     return children

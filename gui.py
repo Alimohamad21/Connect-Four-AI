@@ -10,7 +10,7 @@ from scoreFunctions import *
 from stateFunctions import *
 
 boardState = initializeBoard()
-isUserTurn = False
+isUserTurn = True
 redScore = 0
 yellowScore = 0
 
@@ -19,20 +19,18 @@ def main():
     global SCREEN, CLOCK, boardState, isUserTurn, redScore, yellowScore, k, prune
     k = int(input('ENTER K: '))
     prune = bool(int(input('ENTER prune 0 or 1: ')))
-    stateFunctions.printBoard(POTENTIAL_SCORES)
     pygame.init()
     SCREEN = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     CLOCK = pygame.time.Clock()
     SCREEN.fill(BLACK)
     drawBoard()
     selectedColumn = 0
-    print(pygame.font.get_fonts())
     while True:
         if isFull(boardState):
             if yellowScore > redScore:
                 message = 'YOU WIN !'
             elif yellowScore < redScore:
-                message = 'AI WINS :('
+                message = 'AI WINS :>)'
             else:
                 message = 'DRAW'
         elif isUserTurn:
@@ -42,7 +40,6 @@ def main():
         displayGameState(message)
         x = pygame.mouse.get_pos()[0]
         y = pygame.mouse.get_pos()[1]
-        # print(f'x:{x} y:{y}')
         if isUserTurn:
             if y > 100:
                 if x // 100 == selectedColumn:
@@ -55,13 +52,10 @@ def main():
             else:
                 drawBoard()
         else:
-         #   column = randint(0, 6)
-         #   while isColumnFull(boardState, column):
-         #       column = randint(0, 6)
-         #   boardState = insertAtColumn(boardState, column, 'R')
             myArr = decide(boardState, k, prune)
             boardState = myArr[0]
-            #print(myArr[1], myArr[2])
+            nodesExpanded,runTime=myArr[1], myArr[2]
+            print(f'MINIMAX NODES EXPANDED: {nodesExpanded}\tRUN TIME: {runTime} seconds')
             redScore = calculateScore(boardState, 'R')
             drawBoard()
             isUserTurn = True

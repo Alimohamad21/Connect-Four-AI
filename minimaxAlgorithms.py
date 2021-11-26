@@ -10,9 +10,6 @@ def scoreDiff(boardState):
     return calculateScore(boardState, 'R') - calculateScore(boardState, 'Y')
 
 
-#def evalDiff(boardState):
-#    return eval(boardState, 'R')-eval(boardState, 'Y')
-
 
 def miniMax_pruning(boardState, alpha, beta, k, color):
     if not k:

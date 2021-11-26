@@ -1,6 +1,6 @@
 import sys
 from random import randint
-from minimaxAlgorithms import decide_pruning,decide
+from minimaxAlgorithms import decide,decide_pruning
 import pygame
 
 from constants import *
@@ -50,7 +50,11 @@ def main():
             else:
                 drawBoard()
         else:
-            boardState = decide_pruning(boardState)[0]
+         #   column = randint(0, 6)
+         #   while isColumnFull(boardState, column):
+         #       column = randint(0, 6)
+         #   boardState = insertAtColumn(boardState, column, 'R')
+            boardState = decide(boardState)[0]
             redScore = calculateScore(boardState, 'R')
             drawBoard()
             isUserTurn = True

@@ -3,12 +3,10 @@ from stateFunctions import *
 from scoreFunctions import calculateScore
 
 
-def eval(boardState):
-    myScore = calculateScore(boardState, 'R')
-    opScore = calculateScore(boardState, 'Y')
-    myConnects = possibleBinding(boardState, 'Y')
-    opConnects = possibleBinding(boardState, 'R')
-    return myScore - opScore + (myConnects - opConnects) * 1.25
+def eval(boardState, color):
+    myScore = calculateScore(boardState, color)
+    myConnects = possibleBinding(boardState, color)
+    return myScore
 
 
 def possibleBinding(boardState, color):

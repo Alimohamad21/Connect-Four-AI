@@ -5,7 +5,7 @@ from scoreFunctions import calculateScore
 
 def eval(boardState, color):
     myScore = calculateScore(boardState, color)
-    myConnects = possibleBinding(boardState, color)
+    #myConnects = possibleBinding(boardState, color)
     return myScore
 
 

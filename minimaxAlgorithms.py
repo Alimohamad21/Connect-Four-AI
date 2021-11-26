@@ -10,7 +10,7 @@ def scoreDiff(boardState):
 
 
 def evalDiff(boardState):
-    return eval(boardState, 'R') - eval(boardState, 'Y')
+    return eval(boardState)
 
 
 def miniMax(boardState, alpha, beta, k, color):

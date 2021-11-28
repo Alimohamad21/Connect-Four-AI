@@ -1,38 +1,73 @@
 import sys
-from random import randint
+import time
 
-import stateFunctions
-from minimaxAlgorithms import decide
 import pygame
+import pygame_menu
 
 from constants import *
+from minimaxAlgorithms import decide
 from scoreFunctions import *
 from stateFunctions import *
 
-boardState = initializeBoard()
 isUserTurn = True
-redScore = 0
-yellowScore = 0
+prune = True
+k = 5
 
 
 def main():
-    global SCREEN, CLOCK, boardState, isUserTurn, redScore, yellowScore, k, prune
-    k = int(input('ENTER K: '))
-    prune = bool(int(input('ENTER prune 0 or 1: ')))
+    global SCREEN, menu
     pygame.init()
+
     SCREEN = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-    CLOCK = pygame.time.Clock()
+    menu = pygame_menu.Menu('CONNECT FOUR', WINDOW_WIDTH, WINDOW_HEIGHT,
+                            theme=pygame_menu.themes.THEME_BLUE)
+    menu.add.text_input('K :', default=k, onchange=setK)
+    menu.add.selector('', [('Minimax with alpha-beta pruning', 1), ('Minimax without alpha-beta pruning', 2)],
+                      onchange=setPruning)
+    menu.add.button('Play', game)
+    menu.add.button('Quit', pygame_menu.events.EXIT)
+    menu.mainloop(SCREEN)
+
+
+def setPruning(a, b):
+    global prune
+    prune = not prune
+
+
+def setK(kInput):
+    global k
+    k = kInput
+
+
+def game():
+    global SCREEN, boardState, isUserTurn, redScore, yellowScore, k, prune, gameStarted, menu, gameEnded
+    redScore = 0
+    yellowScore = 0
+    boardState = initializeBoard()
+    try:
+        k = int(k)
+    except:
+        print('Invalid k')
+    print(f'K= {k}')
+    print(f'PRUNING: {prune}')
     SCREEN.fill(BLACK)
     drawBoard()
     selectedColumn = 0
+    gameOver = False
     while True:
         if isFull(boardState):
             if yellowScore > redScore:
                 message = 'YOU WIN !'
             elif yellowScore < redScore:
-                message = 'AI WINS :>)'
+                message = 'AI WINS !'
             else:
                 message = 'DRAW'
+            displayGameState(message)
+            if gameOver:
+                time.sleep(3)
+                menu.mainloop(SCREEN)
+            gameOver = True
+            # menu.mainloop(SCREEN)
         elif isUserTurn:
             message = 'YOUR TURN'
         else:
@@ -54,7 +89,7 @@ def main():
         else:
             myArr = decide(boardState, k, prune)
             boardState = myArr[0]
-            nodesExpanded,runTime=myArr[1], myArr[2]
+            nodesExpanded, runTime = myArr[1], myArr[2]
             print(f'MINIMAX NODES EXPANDED: {nodesExpanded}\tRUN TIME: {runTime} seconds')
             redScore = calculateScore(boardState, 'R')
             drawBoard()
@@ -80,11 +115,11 @@ def drawFade(playableRow, selectedColumn):
 
 
 def displayGameState(text):
-    message = f'YOUR SCORE: {yellowScore}     {text}    AI SCORE:{redScore}'
+    displayedText = f'YOUR SCORE: {yellowScore}     {text}    AI SCORE:{redScore}'
     pygame.draw.rect(SCREEN, GREY,
                      (0, 0, WINDOW_WIDTH, 100))
     font = pygame.font.SysFont('Arial', 24)
-    SCREEN.blit(font.render(message, True, RED), (50, 30))
+    SCREEN.blit(font.render(displayedText, True, RED), (50, 30))
 
 
 # inkfree for you win

@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, parent, score, max_or_min):
+    def __init__(self,  parent, score, max_or_min):
 
         self.max_or_min = max_or_min
         self.parent = parent

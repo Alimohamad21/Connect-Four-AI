@@ -6,11 +6,11 @@ from constants import POTENTIAL_SCORES
 def eval(boardState):
     myScore = calculateScore(boardState, 'R')
     opScore = calculateScore(boardState, 'Y')
-    myConnects = possibleBinding(boardState, 'R')
-    opConnects = possibleBinding(boardState, 'Y')
-    myPotential = calculate_potential(boardState, 'R')
-    opPotential = calculate_potential(boardState, 'Y')
-    return 4*(myScore-opScore) + myPotential - opPotential + myConnects - opConnects
+ #   myConnects = possibleBinding(boardState, 'R')
+ #   opConnects = possibleBinding(boardState, 'Y')
+ #   myPotential = calculate_potential(boardState, 'R')
+ #   opPotential = calculate_potential(boardState, 'Y')
+    return (myScore-opScore) #+ myPotential - opPotential + myConnects - opConnects
 
 def calculate_potential(boardState, color):
     potential_score = 0

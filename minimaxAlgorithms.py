@@ -1,18 +1,17 @@
 import sys
+from time import time
 
+from Node import *
 from heuristicFunctions import eval
 from scoreFunctions import calculateScore
 from stateFunctions import getChildren, isFull
-from time import time
-from Node import*
 
 
 def scoreDiff(boardState):
     return calculateScore(boardState, 'R') - calculateScore(boardState, 'Y')
 
 
-
-def miniMax_pruning(boardState, alpha, beta, k, color, root):
+def miniMax_pruning(boardState, alpha, beta, k, color, root):  # minimax algorithm with pruning
     if isFull(boardState):
         root.score = scoreDiff(boardState)
         return [boardState, root.score, 1]
@@ -23,7 +22,7 @@ def miniMax_pruning(boardState, alpha, beta, k, color, root):
     callNumNodes = 1
     if color == 'R':
         max_eval = -sys.maxsize
-        for child in getChildren(boardState,color):
+        for child in getChildren(boardState, color):
             childNode = Node(root, -sys.maxsize, not root.max_or_min)
             root.addChild(childNode)
             myArr = miniMax_pruning(child, alpha, beta, k - 1, 'Y', childNode)
@@ -34,7 +33,7 @@ def miniMax_pruning(boardState, alpha, beta, k, color, root):
                 max_eval = child_eval
 
             if max_eval >= beta:
-                root.score = str(max_eval)+" pruned"
+                root.score = str(max_eval) + " pruned"
                 break
             if max_eval >= alpha:
                 alpha = max_eval
@@ -51,24 +50,22 @@ def miniMax_pruning(boardState, alpha, beta, k, color, root):
                 maxChild = child
                 max_eval = child_eval
             if max_eval <= alpha:
-                root.score = str(max_eval)+" pruned"
+                root.score = str(max_eval) + " pruned"
                 break
             if max_eval < beta:
                 beta = max_eval
         root.score = max_eval
 
-
     return [maxChild, max_eval, callNumNodes]
 
 
-def miniMax(boardState, k, color, root):
+def miniMax(boardState, k, color, root):  # minimax algorithm without pruning
     if isFull(boardState):
         root.score = scoreDiff(boardState)
         return [boardState, root.score, 1]
     elif not k:
         root.score = eval(boardState)
         return [boardState, root.score, 1]
-
 
     maxChild = None
     callNumNodes = 1
@@ -103,17 +100,16 @@ def miniMax(boardState, k, color, root):
     return [maxChild, max_eval, callNumNodes]
 
 
-def decide(boardState, k=3, prune=True):
+def decide(boardState, k=3, prune=True):  # function to decide the next move
     root = Node(None, -sys.maxsize, True)
     if prune:
         start = time()
-        myArr = miniMax_pruning(boardState, -sys.maxsize, sys.maxsize, k, 'R',root)
+        myArr = miniMax_pruning(boardState, -sys.maxsize, sys.maxsize, k, 'R', root)
         end = time()
 
     else:
         start = time()
         myArr = miniMax(boardState, k, 'R', root)
         end = time()
-    root.printTree(0)
+    root.printTree(5)
     return [myArr[0], myArr[2], end - start]
-

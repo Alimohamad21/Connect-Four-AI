@@ -3,21 +3,25 @@ from stateFunctions import *
 from scoreFunctions import calculateScore
 from constants import POTENTIAL_SCORES
 
-def eval(boardState):
+
+def eval(boardState):    # function to evaluate the current state using heuristics
     myScore = calculateScore(boardState, 'R')
     opScore = calculateScore(boardState, 'Y')
- #   myConnects = possibleBinding(boardState, 'R')
- #   opConnects = possibleBinding(boardState, 'Y')
- #   myPotential = calculate_potential(boardState, 'R')
- #   opPotential = calculate_potential(boardState, 'Y')
-    return (myScore-opScore) #+ myPotential - opPotential + myConnects - opConnects
+    #   myConnects = possibleBinding(boardState, 'R')
+    #   opConnects = possibleBinding(boardState, 'Y')
+    #   myPotential = calculate_potential(boardState, 'R')
+    #   opPotential = calculate_potential(boardState, 'Y')
+    return (myScore - opScore)  # + myPotential - opPotential + myConnects - opConnects
 
-def calculate_potential(boardState, color):
+
+def calculate_potential(boardState, color):  # function to calculate the potential of the board
     potential_score = 0
     for i in range(42):
         if boardState[i] == color:
             potential_score += POTENTIAL_SCORES[i]
-    return potential_score/4
+    return potential_score / 4
+
+
 def possibleBinding(boardState, color):
     value = 0
     for j in range(7):
@@ -28,7 +32,6 @@ def possibleBinding(boardState, color):
         index += j
         value += connections(boardState, index, color)
     return value
-
 
 
 def connections(boardState, index, color):

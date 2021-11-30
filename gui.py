@@ -14,7 +14,7 @@ prune = True
 k = 5
 
 
-def main():
+def main():  # function to display the main menu
     global SCREEN, menu
     pygame.init()
 
@@ -53,6 +53,7 @@ def game():
     SCREEN.fill(BLACK)
     drawBoard()
     selectedColumn = 0
+    oddCount = 0
     gameOver = False
     while True:
         if isFull(boardState):
@@ -78,7 +79,7 @@ def game():
         if isUserTurn:
             if y > 100:
                 if x // 100 == selectedColumn:
-                    if not isColumnFull(boardState, selectedColumn):
+                    if not columnIsFull(boardState, selectedColumn):
                         playableRow = getPlayableRow(boardState, selectedColumn)
                         drawFade(playableRow, selectedColumn)
                 else:
@@ -87,16 +88,19 @@ def game():
             else:
                 drawBoard()
         else:
-            myArr = decide(boardState, k, prune)
-            boardState = myArr[0]
-            nodesExpanded, runTime = myArr[1], myArr[2]
-            print(f'MINIMAX NODES EXPANDED: {nodesExpanded}\tRUN TIME: {runTime} seconds')
-            redScore = calculateScore(boardState, 'R')
-            drawBoard()
-            isUserTurn = True
+            displayGameState(message)
+            if oddCount % 2 == 1:
+                myArr = decide(boardState, k, prune)
+                boardState = myArr[0]
+                nodesExpanded, runTime = myArr[1], myArr[2]
+                print(f'MINIMAX NODES EXPANDED: {nodesExpanded}\tRUN TIME: {runTime} seconds')
+                redScore = calculateScore(boardState, 'R')
+                drawBoard()
+                isUserTurn = True
+            oddCount += 1
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN and isUserTurn and y > 100:
-                if not isColumnFull(boardState, selectedColumn):
+                if not columnIsFull(boardState, selectedColumn):
                     boardState = insertAtColumn(boardState, selectedColumn, 'Y')
                     isUserTurn = False
                     yellowScore = calculateScore(boardState, 'Y')
@@ -107,15 +111,16 @@ def game():
         pygame.display.update()
 
 
-def drawFade(playableRow, selectedColumn):
+def drawFade(playableRow,
+             selectedColumn):  # function to display faded yellow in the first playable row when hovering over a certain column
     pygame.draw.circle(SCREEN, FADED_YELLOW, (
         int(selectedColumn * SQUARE_SIZE + SQUARE_SIZE / 2),
         int(playableRow * SQUARE_SIZE + SQUARE_SIZE + SQUARE_SIZE / 2)),
                        RADIUS)
 
 
-def displayGameState(text):
-    displayedText = f'YOUR SCORE: {yellowScore}     {text}    AI SCORE:{redScore}'
+def displayGameState(text):  # function to display score and turn
+    displayedText = f'                       YOUR SCORE: {yellowScore}     {text}    AI SCORE:{redScore}'
     pygame.draw.rect(SCREEN, GREY,
                      (0, 0, WINDOW_WIDTH, 100))
     font = pygame.font.SysFont('Arial', 24)
@@ -124,11 +129,11 @@ def displayGameState(text):
 
 # inkfree for you win
 
-def drawBoard():
+def drawBoard():  # function to display the board
     color = None
     for j in range(COLUMN_COUNT):  # drawing the rectangle of the board
         for i in range(ROW_COUNT):
-            element = getElementAtIndex(boardState, i, j)
+            element = getChipAtIndex(boardState, i, j)
             if element == 'E':
                 color = GREY
             elif element == 'Y':

@@ -1,12 +1,12 @@
-from stateFunctions import getElementAtIndex
+from stateFunctions import getChipAtIndex
 
 
-def calculateRow(boardState, color):
+def calculateHorizontals(boardState, color):    # function to calculate horizontal connected fours
     score = 0
     for i in range(6):
         count = 0
         for j in range(7):
-            if getElementAtIndex(boardState, i, j) == color:
+            if getChipAtIndex(boardState, i, j) == color:
                 count += 1
             else:
                 count = 0
@@ -20,8 +20,8 @@ def calculateDownToUpDiagonal(boardState, color):
     for j in range(4):
         for i in range(5, 2, -1):
 
-            if getElementAtIndex(boardState, i, j) == getElementAtIndex(boardState, i - 1, j + 1) == getElementAtIndex(
-                    boardState, i - 2, j + 2) == getElementAtIndex(boardState, i - 3, j + 3) == color:
+            if getChipAtIndex(boardState, i, j) == getChipAtIndex(boardState, i - 1, j + 1) == getChipAtIndex(
+                    boardState, i - 2, j + 2) == getChipAtIndex(boardState, i - 3, j + 3) == color:
                 score += 1
 
     return score
@@ -31,19 +31,19 @@ def calculateUpToDownDiagonal(boardState, color):
     score = 0
     for j in range(4):
         for i in range(3):
-            if getElementAtIndex(boardState, i, j) == getElementAtIndex(boardState, i + 1, j + 1) == getElementAtIndex(
-                    boardState, i + 2, j + 2) == getElementAtIndex(boardState, i + 3, j + 3) == color:
+            if getChipAtIndex(boardState, i, j) == getChipAtIndex(boardState, i + 1, j + 1) == getChipAtIndex(
+                    boardState, i + 2, j + 2) == getChipAtIndex(boardState, i + 3, j + 3) == color:
                 score += 1
 
     return score
 
 
-def calculateColumn(boardState, color):
+def calculateVerticals(boardState, color):   # function to calculate vertical connected fours
     score = 0
     for j in range(7):
         count = 0
         for i in range(6):
-            if getElementAtIndex(boardState, i, j) == color:
+            if getChipAtIndex(boardState, i, j) == color:
                 count += 1
             else:
                 count = 0
@@ -52,9 +52,9 @@ def calculateColumn(boardState, color):
     return score
 
 
-def calculateDiagonal(boardState, color):
+def calculateDiagonals(boardState, color):   # function to calculate diagonal connected fours
     return calculateUpToDownDiagonal(boardState, color) + calculateDownToUpDiagonal(boardState, color)
 
 
-def calculateScore(boardState, color):
-    return calculateRow(boardState, color) + calculateColumn(boardState, color) + calculateDiagonal(boardState, color)
+def calculateScore(boardState, color):     # function to calculate the total score for a player
+    return calculateHorizontals(boardState, color) + calculateVerticals(boardState, color) + calculateDiagonals(boardState, color)

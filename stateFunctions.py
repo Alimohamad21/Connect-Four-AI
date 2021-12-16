@@ -1,6 +1,6 @@
 # E for empty
-# Y for yellow FOR OPPONENT
-# R for RED FOR PLAYER
+# Y for YELLOW FOR PLAYER
+# R for RED FOR OPPONENT
 def initializeBoard():   # function to initialize at a certain board
     return 'E' * 42
 
